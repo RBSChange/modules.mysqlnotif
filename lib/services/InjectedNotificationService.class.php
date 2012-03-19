@@ -93,7 +93,7 @@ class mysqlnotif_InjectedNotificationService extends notification_NotificationSe
 	 * @param integer $id
 	 * @return boolean  
 	 */
-	public function sendMessageIdInternal($id)
+	protected function sendMessageIdInternal($id)
 	{
 		$lob = $this->getMsgById($id);
 		if (empty($lob))
@@ -112,9 +112,8 @@ class mysqlnotif_InjectedNotificationService extends notification_NotificationSe
 		$bccArray = $data['bcc'];
 		$subject = $data['su'];
 		$htmlBody = $data['hb'];
-		$textBody = $data['sn'];
-		$senderModuleName = $data['tb'];
-		
+		$textBody = $data['tb'];
+	
 		try
 		{
 			$mailService = f_util_ClassUtils::callMethod($msName, 'getInstance');
