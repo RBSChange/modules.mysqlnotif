@@ -8,6 +8,9 @@ class mysqlnotif_Setup extends object_InitDataSetup
 	{
 		// Add injection of notification_NotificationService.
 		$this->addInjectionInProjectConfiguration('notification_NotificationService', 'mysqlnotif_InjectedNotificationService');
+		
+		// Add tasks.
+		mysqlnotif_ModuleService::getInstance()->addBackgroundSendNotifTask();
 	}
 
 	/**
