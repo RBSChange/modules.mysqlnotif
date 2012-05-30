@@ -19,7 +19,7 @@ class mysqlnotif_BackgroundSendNotifTask extends task_SimpleSystemTask
 				$ids = $nns->getChunkIdsToSend($startId, $chunkSize);
 				if (count($ids))
 				{
-					$result = f_util_System::execHTTPScript($batchPath, $ids);
+					$result = f_util_System::execScript($batchPath, $ids);
 					if (substr($result, -2) != 'OK')
 					{
 						$errors[] = $result;
