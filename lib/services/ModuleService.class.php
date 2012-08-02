@@ -51,12 +51,4 @@ class mysqlnotif_ModuleService extends ModuleBaseService
 		}
 	}
 	
-	/**
-	 * @param Integer $documentId
-	 * @return f_persistentdocument_PersistentTreeNode
-	 */
-//	public function getParentNodeForPermissions($documentId)
-//	{
-//		// Define this method to handle permissions on a virtual tree node. Example available in list module.
-//	}
 }
