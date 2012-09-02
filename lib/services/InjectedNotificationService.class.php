@@ -18,11 +18,11 @@ class mysqlnotif_InjectedNotificationService extends notification_NotificationSe
 	 * @param $senderModuleName string       	
 	 * @return true
 	 */
-	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName)
+	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName, $attachments = array())
 	{
 		$msName = get_class($mailService);
 		$values = array('sn' => $msName, 'smn' => $senderModuleName, 's' => $sender, 'rt' => $replyTo, 'to' => $toArray, 'cc' => $ccArray, 
-			'bcc' => $bccArray, 'su' => $subject, 'hb' => $htmlBody, 'tb' => $textBody);
+			'bcc' => $bccArray, 'su' => $subject, 'hb' => $htmlBody, 'tb' => $textBody, 'at' => $attachments);
 		$lob = JsonService::getInstance()->encode($values);
 		$tm = $this->getTransactionManager();
 		if ($tm->hasTransaction())
@@ -113,11 +113,11 @@ class mysqlnotif_InjectedNotificationService extends notification_NotificationSe
 		$subject = $data['su'];
 		$htmlBody = $data['hb'];
 		$textBody = $data['tb'];
-	
+		$attachments = $data['at'];
 		try
 		{
 			$mailService = f_util_ClassUtils::callMethod($msName, 'getInstance');
-			$mailMessage = parent::composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName);
+			$mailMessage = parent::composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName, $attachments);
 			if ($this->sendMailMessage($mailService, $mailMessage))
 			{
 				$this->setSendMsgById($id);
