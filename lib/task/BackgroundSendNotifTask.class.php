@@ -9,7 +9,7 @@ class mysqlnotif_BackgroundSendNotifTask extends task_SimpleSystemTask
 		$chunkSize = 100;
 		$errors = array();
 		$nns = notification_NotificationService::getInstance();
-		if ($nns instanceof mysqlnotif_InjectedNotificationService)
+		if (method_exists($nns, 'getChunkIdsToSend'))
 		{
 			$batchPath = 'modules/mysqlnotif/lib/bin/batchSend.php';
 			$startId = 0;

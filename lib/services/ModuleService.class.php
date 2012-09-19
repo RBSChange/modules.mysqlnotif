@@ -1,28 +1,9 @@
 <?php
 /**
- * @package modules.mysqlnotif.lib.services
+ * @method mysqlnotif_ModuleService getInstance()
  */
 class mysqlnotif_ModuleService extends ModuleBaseService
-{
-	/**
-	 * Singleton
-	 * @var mysqlnotif_ModuleService
-	 */
-	private static $instance = null;
-
-	/**
-	 * @return mysqlnotif_ModuleService
-	 */
-	public static function getInstance()
-	{
-		if (is_null(self::$instance))
-		{
-			self::$instance = self::getServiceClassInstance(get_class());
-		}
-		return self::$instance;
-	}
-	
-	
+{	
 	/**
 	 * @return void
 	 */

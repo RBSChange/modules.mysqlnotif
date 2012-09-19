@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<module>
-		<enabled>true</enabled>
 		<visible>false</visible>
 		<icon>package</icon>
 	</module>
 	<project>
 		<entry name="max-days-age">10</entry>
-	</project>	
+	</project>
 </config>

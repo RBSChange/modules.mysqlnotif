@@ -9,7 +9,7 @@ class mysqlnotif_BackgroundCleanNotifTask extends task_SimpleSystemTask
 		$chunkSize = 100;
 		$errors = array();
 		$nns = notification_NotificationService::getInstance();
-		if ($nns instanceof mysqlnotif_InjectedNotificationService)
+		if (method_exists($nns, 'cleanNotif'))
 		{
 			$maxDayAge = Framework::getConfiguration('modules/mysqlnotif/max-days-age');
 			$str = $this->plannedTask->getParameters();

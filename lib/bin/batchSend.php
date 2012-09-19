@@ -1,9 +1,8 @@
 <?php
-$notifIdArray = $_POST['argv'];
+$arguments = isset($arguments) ? $arguments : array();
 $tm = f_persistentdocument_TransactionManager::getInstance();
-foreach (array_chunk($notifIdArray, 10) as $chunk)
+foreach (array_chunk($arguments, 10) as $chunk)
 {
-	Framework::info(__FILE__ . ' -> ' . implode(', ', $chunk));
 	try
 	{
 		$tm->beginTransaction();
@@ -11,7 +10,7 @@ foreach (array_chunk($notifIdArray, 10) as $chunk)
 		{
 			try
 			{
-				if (mysqlnotif_InjectedNotificationService::getInstance()->sendMessageId($id))
+				if (notification_NotificationService::getInstance()->sendMessageId($id))
 				{
 					echo '+';
 				}

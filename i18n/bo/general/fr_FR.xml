@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <i18n baseKey="m.mysqlnotif.bo.general" lcid="fr_FR">
-  <key id="module-name">Envoi différé d'email de notification</key>
-  <key id="system-folder-name">Envoi différé d'email de notification</key>
+	<key id="module-name">Envoi différé d'email de notification</key>
+	<key id="system-folder-name">Envoi différé d'email de notification</key>
 </i18n>

@@ -1,28 +1,27 @@
 <?php
 /**
- * @package modules.v.lib.services
+ * @method mysqlnotif_InjectedNotificationService getInstance()
  */
 class mysqlnotif_InjectedNotificationService extends notification_NotificationService
 {
 	/**
-	 *
-	 * @param $mailService MailService       	
-	 * @param $sender string       	
-	 * @param $replyTo string       	
-	 * @param $toArray string[]       	
-	 * @param $ccArray string[]       	
-	 * @param $bccArray string[]       	
-	 * @param $subject string       	
-	 * @param $htmlBody string       	
-	 * @param $textBody string       	
-	 * @param $senderModuleName string       	
-	 * @return true
+	 * @param change_MailService $mailService
+	 * @param \Zend\Mail\Address $sender
+	 * @param string $replyTo
+	 * @param string[] $toArray
+	 * @param string[] $ccArray
+	 * @param string[] $bccArray
+	 * @param string $subject
+	 * @param string $htmlBody
+	 * @param string $senderModuleName
+	 * @param mixed[] $attachments
+	 * @return \Zend\Mail\Message
 	 */
-	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName, $attachments = array())
+	protected function composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $senderModuleName, $attachments = array())
 	{
 		$msName = get_class($mailService);
-		$values = array('sn' => $msName, 'smn' => $senderModuleName, 's' => $sender, 'rt' => $replyTo, 'to' => $toArray, 'cc' => $ccArray, 
-			'bcc' => $bccArray, 'su' => $subject, 'hb' => $htmlBody, 'tb' => $textBody, 'at' => $attachments);
+		$values = array('sn' => $msName, 'smn' => $senderModuleName, 'sem' => $sender->getEmail(), 'sen' => $sender->getName(), 'rt' => $replyTo, 'to' => $toArray, 'cc' => $ccArray, 
+			'bcc' => $bccArray, 'su' => $subject, 'hb' => $htmlBody, 'at' => $attachments);
 		$lob = JsonService::getInstance()->encode($values);
 		$tm = $this->getTransactionManager();
 		if ($tm->hasTransaction())
@@ -102,22 +101,21 @@ class mysqlnotif_InjectedNotificationService extends notification_NotificationSe
 			return false;
 		}
 		
-		$data = JsonService::getInstance()->decode($lob);
+		$data = JsonService::getInstance()->decode($lob);		
 		$msName = $data['sn'];
 		$senderModuleName = $data['smn'];
-		$sender = $data['s'];
+		$sender =  new \Zend\Mail\Address($data['sem'], $data['sen']);
 		$replyTo = $data['rt'];
 		$toArray = $data['to'];
 		$ccArray = $data['cc'];
 		$bccArray = $data['bcc'];
 		$subject = $data['su'];
 		$htmlBody = $data['hb'];
-		$textBody = $data['tb'];
 		$attachments = $data['at'];
 		try
 		{
 			$mailService = f_util_ClassUtils::callMethod($msName, 'getInstance');
-			$mailMessage = parent::composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $textBody, $senderModuleName, $attachments);
+			$mailMessage = parent::composeMailMessage($mailService, $sender, $replyTo, $toArray, $ccArray, $bccArray, $subject, $htmlBody, $senderModuleName, $attachments);
 			if ($this->sendMailMessage($mailService, $mailMessage))
 			{
 				$this->setSendMsgById($id);
@@ -152,8 +150,8 @@ class mysqlnotif_InjectedNotificationService extends notification_NotificationSe
 	}
 	
 	/**
-	 * @param $minId integer       	
-	 * @param $chunkSize integer       	
+	 * @param $minId integer	   	
+	 * @param $chunkSize integer	   	
 	 * @return string[]
 	 */
 	public function getChunkIdsToSend($minId = 0, $chunkSize = 100)
@@ -190,7 +188,7 @@ class mysqlnotif_InjectedNotificationService extends notification_NotificationSe
 	
 	/**
 	 *
-	 * @param $id integer       	
+	 * @param $id integer	   	
 	 * @return string
 	 */
 	protected function getMsgById($id)
@@ -206,7 +204,7 @@ class mysqlnotif_InjectedNotificationService extends notification_NotificationSe
 	
 	/**
 	 *
-	 * @param $id integer       	
+	 * @param $id integer	   	
 	 * @param string $sendDate
 	 * @return string
 	 */
@@ -226,7 +224,7 @@ class mysqlnotif_InjectedNotificationService extends notification_NotificationSe
 	
 	/**
 	 *
-	 * @param $id integer       	
+	 * @param $id integer	   	
 	 * @return string
 	 */
 	protected function updateCountMsgById($id)
